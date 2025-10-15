@@ -21,6 +21,9 @@ Build a paging music player that displays songs fetched from an API, allowing us
 - [x] **Smooth animations** - Fade-in backgrounds and animated scroll transitions
 - [x] **Disabled states** - Previous/next buttons disabled at playlist boundaries
 
+## Quick Notes
+- Did get a AccessDenied on a few of the images imageUrl, namely for Phonk (Trumpet), Ain't Got a Nickel Ain't Got a Dime
+
 ## Features
 
 - **Horizontal Scrolling**: Smooth paging between songs using SwiftUI's native `.scrollTargetBehavior(.paging)`
