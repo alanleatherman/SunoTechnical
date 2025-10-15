@@ -16,6 +16,7 @@ class SongViewModel {
     var currentSongIndex: Int? = 0
     var currentTime: Double = 0.0
     var totalDuration: Double = 238.0 // 3:58 in seconds
+    var isProgrammaticChange: Bool = false
     
     private var progressTimer: Timer?
     

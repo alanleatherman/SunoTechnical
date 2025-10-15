@@ -26,6 +26,7 @@ struct ContentView: View {
             .scrollTargetBehavior(.paging)
             .scrollPosition(id: $vm.currentSongIndex, anchor: .center)
             .scrollClipDisabled()
+            .animation(.easeInOut(duration: 0.3), value: vm.currentSongIndex)
             .onChange(of: vm.currentSongIndex) { oldValue, newValue in
                 if let newValue = newValue, oldValue != newValue {
                     vm.resetProgress()
@@ -39,6 +40,7 @@ struct ContentView: View {
         .background(Color.black.ignoresSafeArea())
     }
 }
+
 
 
 #Preview {

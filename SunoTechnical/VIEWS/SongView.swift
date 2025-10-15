@@ -172,7 +172,7 @@ struct SongView: View {
     // MARK: - Playback Controls
     
     private var playbackControls: some View {
-        HStack(spacing: 60) {
+        HStack(spacing: 30) {
             previousButton
             playPauseButton
             nextButton
@@ -187,7 +187,7 @@ struct SongView: View {
                 viewModel.currentSongIndex = songIndex - 1
             }
         } label: {
-            Image(systemName: "backward.fill")
+            Image(systemName: "backward.end.fill")
                 .font(.title2)
                 .foregroundStyle(.white)
         }
@@ -213,7 +213,7 @@ struct SongView: View {
                 viewModel.currentSongIndex = songIndex + 1
             }
         } label: {
-            Image(systemName: "forward.fill")
+            Image(systemName: "forward.end.fill")
                 .font(.title2)
                 .foregroundStyle(.white)
         }
