@@ -12,6 +12,8 @@ struct SongView: View {
     var viewModel: SongViewModel
     let songIndex: Int
     
+    @State private var imageOpacity = 0.0
+    
     private var song: SongModel {
         guard songIndex < viewModel.songs.count else {
             return SongModel(id: "", title: "", handle: "", displayName: "", imageUrl: "", isLiked: false, upvoteCount: 0, audioUrl: "")
@@ -21,9 +23,6 @@ struct SongView: View {
     
     var body: some View {
         ZStack {
-            Color.black
-                .ignoresSafeArea()
-            
             backgroundImage
             gradientOverlay
             
@@ -41,29 +40,40 @@ struct SongView: View {
     // MARK: - Background Components
     
     private var backgroundImage: some View {
-        Group {
-            if let songURL = URL(string: song.imageUrl) {
-                AsyncImage(url: songURL) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                            .clipped()
-                            .transition(.opacity)
-                            .animation(.easeInOut(duration: 0.3), value: song.id)
-                    case .failure:
-                        EmptyView()
-                    case .empty:
-                        EmptyView()
-                    @unknown default:
-                        EmptyView()
+        GeometryReader { geo in
+            ZStack {
+                Color.black.ignoresSafeArea()
+                
+                if let songURL = URL(string: song.imageUrl) {
+                    AsyncImage(url: songURL) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: geo.size.width, height: geo.size.height)
+                                .clipped()
+                                .opacity(imageOpacity)
+                                .onAppear {
+                                    withAnimation(.easeInOut(duration: 0.5)) {
+                                        imageOpacity = 1
+                                    }
+                                }
+                        case .failure:
+                            EmptyView()
+                        case .empty:
+                            EmptyView()
+                        @unknown default:
+                            EmptyView()
+                        }
                     }
                 }
-                .ignoresSafeArea()
+            }
+            .onChange(of: song.id) { _ in
+                imageOpacity = 0
             }
         }
+        .ignoresSafeArea()
     }
     
     private var gradientOverlay: some View {
@@ -172,13 +182,15 @@ struct SongView: View {
     // MARK: - Playback Controls
     
     private var playbackControls: some View {
-        HStack(spacing: 30) {
+        HStack(spacing: 60) {
             previousButton
             playPauseButton
             nextButton
         }
         .padding(.top, 20)
         .padding(.bottom, 40)
+        .frame(maxWidth: .infinity)
+        .allowsHitTesting(true)
     }
     
     private var previousButton: some View {
@@ -187,9 +199,10 @@ struct SongView: View {
                 viewModel.currentSongIndex = songIndex - 1
             }
         } label: {
-            Image(systemName: "backward.end.fill")
+            Image(systemName: "backward.fill")
                 .font(.title2)
                 .foregroundStyle(.white)
+                .frame(width: 44, height: 44)
         }
         .buttonStyle(.plain)
         .disabled(songIndex == 0)
@@ -198,13 +211,16 @@ struct SongView: View {
     
     private var playPauseButton: some View {
         Button {
+            print("Play button tapped - current state: \(viewModel.isPlaying)")
             viewModel.togglePlayPause()
         } label: {
             Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
                 .font(.system(size: 40))
                 .foregroundStyle(.white)
+                .frame(width: 60, height: 60)
         }
         .buttonStyle(.plain)
+        .contentShape(Rectangle())
     }
     
     private var nextButton: some View {
@@ -213,9 +229,10 @@ struct SongView: View {
                 viewModel.currentSongIndex = songIndex + 1
             }
         } label: {
-            Image(systemName: "forward.end.fill")
+            Image(systemName: "forward.fill")
                 .font(.title2)
                 .foregroundStyle(.white)
+                .frame(width: 44, height: 44)
         }
         .buttonStyle(.plain)
         .disabled(songIndex >= viewModel.songs.count - 1)
@@ -230,6 +247,7 @@ struct SongView: View {
         return String(format: "%d:%02d", mins, secs)
     }
 }
+
 
 #Preview {
     @Previewable @State var previewVM = SongViewModel()
