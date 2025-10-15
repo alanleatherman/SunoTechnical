@@ -1,5 +1,7 @@
 # SunoTechnical - iOS Interview Assignment
 
+![Suno-Technical-Gif (compressed)](https://github.com/user-attachments/assets/f3c96634-f4f6-45d5-9a65-e8e8240689c2)
+
 A stripped-down version of Suno's paging music player built with SwiftUI. This app replicates the expanded playback experience from Suno's iOS app, featuring horizontal song browsing with playback controls.
 
 ## Assignment Overview
