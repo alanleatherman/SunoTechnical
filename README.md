@@ -20,6 +20,7 @@ Build a paging music player that displays songs fetched from an API, allowing us
 - [x] **Auto-advance** - Automatically moves to next song when current finishes
 - [x] **Smooth animations** - Fade-in backgrounds and animated scroll transitions
 - [x] **Disabled states** - Previous/next buttons disabled at playlist boundaries
+- [x] **Audio Playback** - Audio playing using AVFoundation on given song
 
 ## Quick Notes
 - Did get a AccessDenied on a few of the images imageUrl, namely for Phonk (Trumpet), Ain't Got a Nickel Ain't Got a Dime
@@ -167,7 +168,6 @@ ScrollView(.horizontal) {
 
 ## Future Enhancements
 
-- [ ] Actual audio playback using AVPlayer/AVFoundation
 - [ ] Backend API integration for persisting likes
 - [ ] User authentication and profiles
 - [ ] Playlist creation and management
