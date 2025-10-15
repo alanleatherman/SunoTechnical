@@ -13,7 +13,10 @@ struct SongView: View {
     let songIndex: Int
     
     private var song: SongModel {
-        viewModel.songs[songIndex]
+        guard songIndex < viewModel.songs.count else {
+            return SongModel(id: "", title: "", handle: "", displayName: "", imageUrl: "", isLiked: false, upvoteCount: 0, audioUrl: "")
+        }
+        return viewModel.songs[songIndex]
     }
     
     var body: some View {
@@ -31,6 +34,8 @@ struct SongView: View {
                 playbackControls
             }
         }
+        .contentShape(Rectangle())
+        .allowsHitTesting(true)
     }
     
     // MARK: - Background Components
@@ -180,7 +185,6 @@ struct SongView: View {
         Button {
             if songIndex > 0 {
                 viewModel.currentSongIndex = songIndex - 1
-                viewModel.resetProgress()
             }
         } label: {
             Image(systemName: "backward.fill")
@@ -207,7 +211,6 @@ struct SongView: View {
         Button {
             if songIndex < viewModel.songs.count - 1 {
                 viewModel.currentSongIndex = songIndex + 1
-                viewModel.resetProgress()
             }
         } label: {
             Image(systemName: "forward.fill")
